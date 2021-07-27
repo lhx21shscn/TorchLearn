@@ -17,31 +17,6 @@ pytorch的ResNet实现中,分为BasicBlock,Bottleneck两种。
 BasicBlock: 3*3->3*3
 Bottleneck: 1*1->3*3->1*1
 """
-# 没有用到的BasicBlock块, 在resnet18、resnet34中使用
-# class BasicBlock(nn.Module):
-#     expansion = 1
-#     def __init__(self, in_channels, out_channels, downsample=None, strides=1):
-#         """
-#         只有第一个卷积可能改变大小,第二个卷积步长为 1
-#         :param is_use_1x1conv: 是否使用1*1的卷积
-#         :param strides: 步长，可以取 1 or 2，如果取2则 (H, W) -> (H/2, W/2)
-#         :param downsample:
-#         """
-#         self.downsample = downsample
-#
-#         super(BasicBlock, self).__init__()
-#         self.block = nn.Sequential(
-#             nn.Conv2d(in_channels, out_channels, kernel_size=3, padding=1, strides=strides), nn.BatchNorm2d(out_channels),
-#             nn.ReLU(),
-#             nn.Conv2d(out_channels, out_channels, kernel_size=3, padding=1, stride=1), nn.BatchNorm2d(out_channels)
-#         )
-#
-#     def forward(self, x):
-#         output = self.block(x)
-#         if self.downsample is not None:
-#             y = self.downsample(x)
-#         output += y
-#         return F.relu(output)
 
 class Bottleneck(nn.Module):
     expansion = 4
@@ -166,7 +141,7 @@ if __name__ == "__main__":
     net1 = models.resnet50()
 
     print(len(net.state_dict()), len(net1.state_dict()))
-    # 从参数数量的不同可以看出其实和PyTorch实现的是不太一样的，不一样的地方在他的卷积没有bias，我的有。
+    # 从参数数量的完全相同可以看出其实和PyTorch实现的是应该一样的。
     # 如果某一天心血来潮要改成和PyTorch一模一样可以把state_dict输出然后对着一个一个佐证。
     for layer in net.state_dict():
         print(layer)
